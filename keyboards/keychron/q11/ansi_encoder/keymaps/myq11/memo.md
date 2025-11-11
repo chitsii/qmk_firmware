@@ -1,0 +1,1 @@
+qmk compile -kb keychron/q11/ansi_encoder -km myq11
