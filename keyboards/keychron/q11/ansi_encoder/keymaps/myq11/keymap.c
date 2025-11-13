@@ -134,10 +134,30 @@ const key_override_t ko_jp_lbrc = ko_make_with_layers_negmods_and_options(
     0, KC_LBRC, KC_RBRC,
     (1 << WIN_BASE_JP), MOD_MASK_CSAG, ko_option_no_reregister_trigger);
 
-// ] (no shift) -> ] (JIS layout: ] position has [, ] is at Shift+])
+// ] (no shift) -> ] (JIS layout: ] position has [, ] is at \ position)
 const key_override_t ko_jp_rbrc = ko_make_with_layers_negmods_and_options(
-    0, KC_RBRC, LSFT(KC_RBRC),
+    0, KC_RBRC, KC_BSLS,
     (1 << WIN_BASE_JP), MOD_MASK_CSAG, ko_option_no_reregister_trigger);
+
+// Shift+[ -> { (JIS layout: Shift+[ outputs `, { is at Shift+])
+const key_override_t ko_jp_lcbr = ko_make_with_layers_negmods_and_options(
+    MOD_MASK_SHIFT, KC_LBRC, LSFT(KC_RBRC),
+    (1 << WIN_BASE_JP), MOD_MASK_CAG, ko_option_no_reregister_trigger);
+
+// Shift+] -> } (JIS layout: Shift+] outputs {, } is at Shift+\)
+const key_override_t ko_jp_rcbr = ko_make_with_layers_negmods_and_options(
+    MOD_MASK_SHIFT, KC_RBRC, LSFT(KC_BSLS),
+    (1 << WIN_BASE_JP), MOD_MASK_CAG, ko_option_no_reregister_trigger);
+
+// \ (no shift) -> \ (JIS layout: \ position has ], \ is at INT3/Yen key with shift)
+const key_override_t ko_jp_bsls = ko_make_with_layers_negmods_and_options(
+    0, KC_BSLS, LSFT(KC_INT3),
+    (1 << WIN_BASE_JP), MOD_MASK_CSAG, ko_option_no_reregister_trigger);
+
+// Shift+\ -> | (JIS layout: Shift+\ outputs }, | is at Shift+INT1)
+const key_override_t ko_jp_pipe = ko_make_with_layers_negmods_and_options(
+    MOD_MASK_SHIFT, KC_BSLS, LSFT(KC_INT1),
+    (1 << WIN_BASE_JP), MOD_MASK_CAG, ko_option_no_reregister_trigger);
 
 // Shift+; -> : (JIS layout: : )
 const key_override_t ko_jp_colon = ko_make_with_layers_negmods_and_options(
@@ -158,6 +178,10 @@ const key_override_t *key_overrides[] = {
     &ko_jp_equal,
     &ko_jp_lbrc,
     &ko_jp_rbrc,
+    &ko_jp_lcbr,
+    &ko_jp_rcbr,
+    &ko_jp_bsls,
+    &ko_jp_pipe,
     &ko_jp_colon,
     NULL
 };
