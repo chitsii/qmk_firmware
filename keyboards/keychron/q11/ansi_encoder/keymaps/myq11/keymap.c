@@ -25,6 +25,10 @@ enum layers{
     NUM_SYM,  // 記号レイヤー追加
 };
 
+enum custom_keycodes {
+    M_JIGL = SAFE_RANGE,  // Mouse Jiggler トグルキー
+};
+
 #define KC_TASK LGUI(KC_TAB)
 #define KC_FLXP LGUI(KC_E)
 
@@ -32,6 +36,12 @@ enum layers{
 #define SPC_SYM LT(NUM_SYM, KC_SPC)
 #define ENT_CTL RCTL_T(KC_ENT)
 #define ENT_GUI RGUI_T(KC_ENT)
+
+// Mouse Jiggler グローバル変数
+bool is_mouse_jiggle_active = false;
+bool mouse_jiggle_direction = false; // 左右の方向を交互に切り替え
+uint16_t mouse_jiggle_frequency = 15000; // 15秒ごとにマウス移動
+uint16_t mouse_jiggle_timer = 0;
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [MAC_BASE] = LAYOUT_91_ansi(
@@ -43,9 +53,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         _______,  KC_LGUI,  KC_LALT,  KC_LCTL,  MO(MAC_FN),         SPC_SYM,                       ENT_GUI,            KC_CAPS,  MO(MAC_FN), KC_RCTL,  KC_LEFT,  KC_DOWN,  KC_RGHT),
 
     [MAC_FN] = LAYOUT_91_ansi(
-        RM_TOGG,  _______,  KC_F1,    KC_F2,    KC_F3,    KC_F4,    KC_F5,     KC_F6,    KC_F7,    KC_F8,    KC_F9,    KC_F10,   KC_F11,     KC_F12,   _______,  _______,  RM_TOGG,
+        M_JIGL,  _______,  KC_F1,    KC_F2,    KC_F3,    KC_F4,    KC_F5,     KC_F6,    KC_F7,    KC_F8,    KC_F9,    KC_F10,   KC_F11,     KC_F12,   _______,  _______,  RM_TOGG,
         _______,  _______,  KC_F1,    KC_F2,    KC_F3,    KC_F4,    KC_F5,     KC_F6,    KC_F7,    KC_F8,    KC_F9,    KC_F10,   KC_F11,     KC_F12,   KC_DEL,            _______,
-        _______,  KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,     KC_PGUP,  LGUI(KC_LEFT), KC_UP, LGUI(KC_RGHT), _______,  _______,  _______,  _______,  _______,
+        _______,  _______,   KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,     KC_PGUP,  LGUI(KC_LEFT), KC_UP, LGUI(KC_RGHT), _______,  _______,  _______,  _______,  _______,
         _______,  _______,  KC_NO,    KC_NO,    KC_NO,    KC_NO,    KC_NO,     KC_PGDN,  KC_LEFT,  KC_DOWN,  KC_RGHT,  _______,  _______,              _______,            _______,
         _______,  _______,  _______,  _______,  _______,  _______,   _______,  KC_NO,    _______,  _______,  _______,  _______,              _______,  _______,
         _______,  _______,  _______,  _______,  _______,            _______,                       _______,            _______,  _______,    _______,  _______,  _______,  _______),
@@ -67,9 +77,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         _______,  KC_LCTL,  KC_LGUI,  KC_LALT,  MO(WIN_FN),         SPC_SYM,                       ENT_CTL,            JP_ZKHK,  MO(WIN_FN), KC_RCTL,  KC_LEFT,  KC_DOWN,  KC_RGHT),
 
     [WIN_FN] = LAYOUT_91_ansi(
-        RM_TOGG,  _______,  KC_BRID,  KC_BRIU,  LGUI(KC_TAB), LGUI(KC_E), RM_VALD,   RM_VALU,  KC_MPRV,  KC_MPLY,  KC_MNXT,  KC_MUTE,  KC_VOLD,    KC_VOLU,  _______,  _______,  RM_TOGG,
+        M_JIGL,  _______,  KC_BRID,  KC_BRIU,  LGUI(KC_TAB), LGUI(KC_E), RM_VALD,   RM_VALU,  KC_MPRV,  KC_MPLY,  KC_MNXT,  KC_MUTE,  KC_VOLD,    KC_VOLU,  _______,  _______,  RM_TOGG,
         _______,  KC_GRV,   KC_F1,    KC_F2,    KC_F3,        KC_F4,      KC_F5,     KC_F6,    KC_F7,    KC_F8,    KC_F9,    KC_F10,   KC_F11,   KC_F12,     _______,            _______,
-        _______,  KC_CAPS,  KC_NO,    KC_NO,    KC_NO,        KC_NO,      KC_NO,     KC_PGUP,  KC_HOME,  KC_UP,    KC_END,   _______,  _______,    _______,  _______,            _______,
+        _______,  KC_CAPS,  _______,   KC_NO,    KC_NO,        KC_NO,      KC_NO,     KC_PGUP,  KC_HOME,  KC_UP,    KC_END,   _______,  _______,    _______,  _______,            _______,
         _______,  _______,  KC_NO,    KC_NO,    KC_NO,        KC_NO,      KC_NO,     KC_PGDN,  KC_LEFT,  KC_DOWN,  KC_RGHT,  _______,  _______,              _______,            _______,
         _______,  _______,  _______,  _______,  _______,      _______,    _______,   _______,  _______,  _______,  _______,  _______,              _______,  _______,
         _______,  _______,  _______,  _______,  _______,                _______,                       _______,            _______,  _______,    _______,  _______,  _______,  _______),
@@ -230,5 +240,39 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
             return 180;  // Space/Enterは少し短めに（デフォルト200ms）
         default:
             return TAPPING_TERM;
+    }
+}
+
+// Mouse Jiggler: キー処理
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    switch (keycode) {
+        case M_JIGL:
+            if (record->event.pressed) {
+                is_mouse_jiggle_active = !is_mouse_jiggle_active;
+            }
+            return false;
+    }
+    return true;
+}
+
+// Mouse Jiggler: タイマー処理
+void matrix_scan_user(void) {
+    if (is_keyboard_master()) {
+        // Split keyboardのマスター側のみでタイマーを初期化
+        if (mouse_jiggle_timer == 0) {
+            mouse_jiggle_timer = timer_read();
+        }
+    }
+
+    if (is_mouse_jiggle_active) {
+        if (timer_elapsed(mouse_jiggle_timer) > mouse_jiggle_frequency) {
+            mouse_jiggle_timer = timer_read();
+            if (mouse_jiggle_direction) {
+                tap_code(MS_LEFT);
+            } else {
+                tap_code(MS_RGHT);
+            }
+            mouse_jiggle_direction = !mouse_jiggle_direction;
+        }
     }
 }
