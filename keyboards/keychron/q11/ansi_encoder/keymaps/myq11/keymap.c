@@ -33,6 +33,7 @@ enum layers{
 
 enum custom_keycodes {
     M_JIGL = SAFE_RANGE,  // Mouse Jiggler トグルキー
+    OS_LANG,              // OS別: Mac=CapsLock / Win=F13
 };
 
 #define KC_TASK LGUI(KC_TAB)
@@ -54,9 +55,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_MUTE,  KC_GRV,   KC_F1,    KC_F2,    KC_F3,    KC_F4,    KC_F5,     KC_F6,    KC_F7,    KC_F8,    KC_F9,    KC_F10,   KC_F11,     KC_F12,   KC_NO,    KC_NO,    KC_MUTE,
         _______,  KC_ESC,   KC_1,     KC_2,     KC_3,     KC_4,     KC_5,      KC_6,     KC_7,     KC_8,     KC_9,     KC_0,     KC_MINS,    KC_EQL,   KC_DEL,             DF(MAC_BASE),
         _______,  KC_TAB,   KC_Q,     KC_W,     KC_E,     KC_R,     KC_T,      KC_Y,     KC_U,     KC_I,     KC_O,     KC_P,     KC_LBRC,    KC_RBRC,  KC_BSLS,            DF(WIN_BASE),
-        _______,  KC_BSPC,  KC_A,     KC_S,     KC_D,     KC_F,     KC_G,      KC_H,     KC_J,     KC_K,     KC_L,     KC_SCLN,  KC_QUOT,              KC_ENT,             DF(WIN_BASE_JP),
+        _______,  KC_BSPC,  KC_A,     KC_S,     KC_D,     KC_F,     KC_G,      KC_H,     KC_J,     KC_K,     KC_L,     KC_SCLN,  KC_QUOT,              KC_CAPS,             DF(WIN_BASE_JP),
         _______,  KC_LSFT,            KC_Z,     KC_X,     KC_C,     KC_V,      KC_B,     KC_N,     KC_M,     KC_COMM,  KC_DOT,   KC_SLSH,              KC_RSFT,  KC_UP,
-        _______,  KC_LGUI,  KC_LALT,  KC_LCTL,  MO(MAC_FN),         SPC_SYM,                       KC_ENT,            KC_CAPS,  MO(MAC_FN), KC_RCTL,  KC_LEFT,  KC_DOWN,  KC_RGHT),
+        _______,  KC_LGUI,  KC_LALT,  KC_LCTL,  MO(MAC_FN),         SPC_SYM,                       KC_ENT,            OS_LANG,  MO(MAC_FN), KC_RCTL,  KC_LEFT,  KC_DOWN,  KC_RGHT),
 
     [MAC_FN] = LAYOUT_91_ansi(
         M_JIGL,  _______,  KC_F1,    KC_F2,    KC_F3,    KC_F4,    KC_F5,     KC_F6,    KC_F7,    KC_F8,    KC_F9,    KC_F10,   KC_F11,     KC_F12,   _______,  _______,  RM_TOGG,
@@ -70,17 +71,17 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_MUTE,  KC_GRV,   KC_F1,    KC_F2,    KC_F3,    KC_F4,    KC_F5,     KC_F6,    KC_F7,    KC_F8,    KC_F9,    KC_F10,   KC_F11,     KC_F12,   KC_NO,    KC_NO,    KC_MUTE,
         _______,  KC_ESC,   KC_1,     KC_2,     KC_3,     KC_4,     KC_5,      KC_6,     KC_7,     KC_8,     KC_9,     KC_0,     KC_MINS,    KC_EQL,   KC_DEL,             DF(MAC_BASE),
         _______,  KC_TAB,   KC_Q,     KC_W,     KC_E,     KC_R,     KC_T,      KC_Y,     KC_U,     KC_I,     KC_O,     KC_P,     KC_LBRC,    KC_RBRC,  KC_BSLS,            DF(WIN_BASE),
-        _______,  KC_BSPC,  KC_A,     KC_S,     KC_D,     KC_F,     KC_G,      KC_H,     KC_J,     KC_K,     KC_L,     KC_SCLN,  KC_QUOT,              KC_ENT,             DF(WIN_BASE_JP),
+        _______,  KC_BSPC,  KC_A,     KC_S,     KC_D,     KC_F,     KC_G,      KC_H,     KC_J,     KC_K,     KC_L,     KC_SCLN,  KC_QUOT,              KC_F13,             DF(WIN_BASE_JP),
         _______,  KC_LSFT,  KC_Z,     KC_X,     KC_C,     KC_V,      KC_B,     KC_N,     KC_M,     KC_COMM,  KC_DOT,   KC_SLSH,              KC_RSFT,  KC_UP,
-        _______,  KC_LCTL,  KC_LGUI,  KC_LALT,  MO(WIN_FN),         SPC_SYM,                       KC_ENT,            KC_F13,   MO(WIN_FN), KC_RCTL,  KC_LEFT,  KC_DOWN,  KC_RGHT),
+        _______,  KC_LCTL,  KC_LGUI,  KC_LALT,  MO(WIN_FN),         SPC_SYM,                       KC_ENT,            OS_LANG,  MO(WIN_FN), KC_RCTL,  KC_LEFT,  KC_DOWN,  KC_RGHT),
 
     [WIN_BASE_JP] = LAYOUT_91_ansi(
         KC_MUTE,  KC_GRV,   KC_F1,    KC_F2,    KC_F3,    KC_F4,    KC_F5,     KC_F6,    KC_F7,    KC_F8,    KC_F9,    KC_F10,   KC_F11,     KC_F12,   KC_NO,    KC_NO,    KC_MUTE,
         _______,  KC_ESC,   KC_1,     KC_2,     KC_3,     KC_4,     KC_5,      KC_6,     KC_7,     KC_8,     KC_9,     KC_0,     KC_MINS,    KC_EQL,   KC_DEL,             DF(MAC_BASE),
         _______,  KC_TAB,   KC_Q,     KC_W,     KC_E,     KC_R,     KC_T,      KC_Y,     KC_U,     KC_I,     KC_O,     KC_P,     KC_LBRC,    KC_RBRC,  KC_BSLS,            DF(WIN_BASE),
-        _______,  KC_BSPC,  KC_A,     KC_S,     KC_D,     KC_F,     KC_G,      KC_H,     KC_J,     KC_K,     KC_L,     KC_SCLN,  KC_QUOT,              KC_ENT,             DF(WIN_BASE_JP),
+        _______,  KC_BSPC,  KC_A,     KC_S,     KC_D,     KC_F,     KC_G,      KC_H,     KC_J,     KC_K,     KC_L,     KC_SCLN,  KC_QUOT,              KC_GRV,             DF(WIN_BASE_JP),
         _______,  KC_LSFT,  KC_Z,     KC_X,     KC_C,     KC_V,     KC_B,     KC_N,     KC_M,     KC_COMM,  KC_DOT,   KC_SLSH,              KC_RSFT,  KC_UP,
-        _______,  KC_LCTL,  KC_LGUI,  KC_LALT,  MO(WIN_FN),         SPC_SYM,                       KC_ENT,            KC_GRV,   MO(WIN_FN), KC_RCTL,  KC_LEFT,  KC_DOWN,  KC_RGHT),
+        _______,  KC_LCTL,  KC_LGUI,  KC_LALT,  MO(WIN_FN),         SPC_SYM,                       KC_ENT,            OS_LANG,  MO(WIN_FN), KC_RCTL,  KC_LEFT,  KC_DOWN,  KC_RGHT),
 
     [WIN_FN] = LAYOUT_91_ansi(
         M_JIGL,  _______,  KC_BRID,  KC_BRIU,  LGUI(KC_TAB), LGUI(KC_E), RM_VALD,   RM_VALU,  KC_MPRV,  KC_MPLY,  KC_MNXT,  KC_MUTE,  KC_VOLD,    KC_VOLU,  _______,  _______,  RM_TOGG,
@@ -96,7 +97,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         _______,  _______,  KC_TILD,  _______,  _______,  _______,  KC_CIRC,   _______,  KC_PLUS,  KC_LBRC,  KC_RBRC,  _______,  _______,    _______,  _______,            _______,
         _______,  _______,  KC_EXLM,  KC_AT,    KC_HASH,  KC_PERC,  KC_DLR,    KC_AMPR,  KC_EQL,   KC_LPRN,  KC_RPRN,  KC_UNDS,  _______,              KC_PIPE,            _______,
         _______,  _______,  _______,  _______,  _______,  _______,  _______,   KC_ASTR,  KC_MINS,  KC_LCBR,  KC_RCBR,  _______,              _______,  _______,
-        _______,  _______,  _______,  _______,  _______,            _______,                       _______,            _______,  _______,    _______,  _______,  _______,  _______),
+        _______,  _______,  _______,  _______,  _______,            _______,                       OS_LANG,            _______,  _______,    _______,  _______,  _______,  _______),
 
 };
 
@@ -255,6 +256,18 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case M_JIGL:
             if (record->event.pressed) {
                 is_mouse_jiggle_active = !is_mouse_jiggle_active;
+            }
+            return false;
+
+        case OS_LANG:
+            if (record->event.pressed) {
+                if (default_layer_state & (1UL << MAC_BASE)) {
+                    tap_code(KC_CAPS);
+                } else if (default_layer_state & (1UL << WIN_BASE_JP)) {
+                    tap_code(KC_GRV);
+                } else {
+                    tap_code(KC_F13);
+                }
             }
             return false;
     }
