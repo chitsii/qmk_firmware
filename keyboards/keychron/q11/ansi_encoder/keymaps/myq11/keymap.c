@@ -16,6 +16,12 @@
 #include QMK_KEYBOARD_H
 // #include "keymap_extras/keymap_japanese.h"
 
+void keyboard_post_init_user(void) {
+#ifdef RGB_MATRIX_ENABLE
+    rgb_matrix_disable_noeeprom();
+#endif
+}
+
 enum layers{
     MAC_BASE,
     MAC_FN,
